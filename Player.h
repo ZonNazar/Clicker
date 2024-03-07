@@ -1,12 +1,15 @@
 #ifndef CLICKER_PLAYER_H
 #define CLICKER_PLAYER_H
 #include <iostream>
+#include <vector>
+#include "Upgrade.h"
 class Player {
 private:
     int _killed_enemies;
     std::string _name;
     std::string _email;
     int _id;
+    std::vector<Upgrade> purchased_upgrades;
 public:
     int RandomNumber(int a, int b);
     Player();

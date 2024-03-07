@@ -25,6 +25,6 @@ Player::Player(const std::string &name, const std::string &email)
 : Player{name, email, RandomNumber(0,1000)}{}
 
 Player::Player(const std::string &name, const std::string &email, int id)
-:_name{name},_email{email}, _id{id}{}
+:_name{name},_email{email}, _id{id}, purchased_upgrades{{}}{}
 
 Player::~Player(){}

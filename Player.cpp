@@ -1,10 +1,19 @@
 #include "Player.h"
 #include <random>
-int RandomNumber(int a, int b)
-{
+int Player::RandomNumber(int a, int b) {
     std::random_device rd;
     std::uniform_int_distribution<int> distribution(a,b);
     return distribution(rd);
+}
+void Player::operator+(const Player &player) {
+    _killed_enemies+=player._killed_enemies;
+}
+void Player::operator++() {
+    _killed_enemies+=1000;
+}
+std::ostream &operator<<(std::ostream &os, const Player &player){
+    os << "\n This player have killed: " << player._killed_enemies << "enemies";
+    return os;
 }
 Player::Player()
 : Player{"Frank", "emptyemail@gmail.com", RandomNumber(0,1000)}{}

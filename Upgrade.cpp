@@ -2,8 +2,17 @@
 
 std::vector<Upgrade> Upgrade::bought_upgrades = {};
 
-
-Upgrade Upgrade::find_by_name(const std::string &name){}
+std::string Upgrade::get_name() {
+    return _name;
+}
+Upgrade Upgrade::find_by_name(const std::string &name){
+    for(Upgrade &u : bought_upgrades)
+    {
+        if(u.get_name() == name) return u;
+    }
+    std::cout << "Nothing found";
+    return {};
+}
 
 
 Upgrade::Upgrade()

@@ -35,3 +35,5 @@ Upgrade::Upgrade(const Upgrade &other)
 :_name{other._name}, _description{other._description}{
     bought_upgrades.emplace_back(*this);
 }
+
+Upgrade::~Upgrade(){}

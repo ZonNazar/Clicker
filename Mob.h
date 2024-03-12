@@ -9,6 +9,8 @@ private:
 public:
     Mob();
     Mob(const std::string &type);
+    Mob(Mob &&other) noexcept;
+    Mob(const Mob &other);
     Mob &operator=(const Mob &rhs);
     virtual ~Mob();
 };

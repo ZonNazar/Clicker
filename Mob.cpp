@@ -15,4 +15,11 @@ Mob &Mob::operator=(const Mob &rhs) {
     }
     return *this;
 }
+
+Mob::Mob(Mob &&other) noexcept
+: Enemy{other},_type{other._type}{}
+
+Mob::Mob(const Mob &other)
+: Enemy{other}, _type{other._type}{}
+
 Mob::~Mob(){}

@@ -9,6 +9,8 @@ public:
     Enemy &operator=(const Enemy &rhs);
     Enemy();
     Enemy(int hp);
+    Enemy(Enemy &&other) noexcept;
+    Enemy(const Enemy &other);
   virtual ~Enemy();
 };
 

@@ -11,4 +11,11 @@ Enemy &Enemy::operator=(const Enemy &rhs) {
     }
     return *this;
 }
+
+Enemy::Enemy(Enemy &&other) noexcept
+:_hp{other._hp}{}
+
+Enemy::Enemy(const Enemy &other)
+:_hp{other._hp}{}
+
 Enemy::~Enemy() {}

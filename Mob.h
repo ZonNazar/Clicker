@@ -5,10 +5,12 @@
 
 class Mob: public Enemy{
 private:
-    std::string _type;
+    int _hp;
 public:
+    virtual void show_info() const override;
+    virtual void take_damage(int damage) override;
     Mob();
-    Mob(const std::string &type);
+    Mob(int hp);
     Mob(Mob &&other) noexcept;
     Mob(const Mob &other);
     Mob &operator=(const Mob &rhs);

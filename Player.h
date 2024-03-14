@@ -4,8 +4,8 @@
 #include <vector>
 #include "Upgrade.h"
 #include "Weapon.h"
-
-class Player {
+#include "Description.h"
+class Player: public Description{
 private:
     int _killed_enemies;
     std::string _name;
@@ -14,6 +14,7 @@ private:
     Weapon currentWeapon;
     std::vector<Upgrade> purchased_upgrades;
 public:
+    virtual void show_info() const override;
     int RandomNumber(int a, int b);
     Player();
     Player(const std::string &name);

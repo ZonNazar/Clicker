@@ -5,6 +5,9 @@ int Player::RandomNumber(int a, int b) {
     std::uniform_int_distribution<int> distribution(a,b);
     return distribution(rd);
 }
+void Player::show_info() const {
+    std::cout << "Current score:" << _killed_enemies << std::endl;
+}
 void Player::operator+(const Player &player) {
     _killed_enemies+=player._killed_enemies;
 }

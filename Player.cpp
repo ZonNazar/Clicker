@@ -23,8 +23,8 @@ void Player::show_info() const {
 void Player::operator+(const Player &player) {
     _killed_enemies+=player._killed_enemies;
 }
-void Player::operator++() {
-    _killed_enemies+=1000;
+int Player::operator++(int) {
+    _killed_enemies+=1;
 }
 std::ostream &operator<<(std::ostream &os, const Player &player){
     os << "\n This player have killed: " << player._killed_enemies << "enemies";

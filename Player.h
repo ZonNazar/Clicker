@@ -25,7 +25,7 @@ public:
     void set_new_id(int new_id);
     void set_new_score(int new_score);
     void operator+(const Player &player);
-    void operator++();
+    int operator++(int);
     virtual void show_info() const override;
     static void upload_info_about_player(const Player &player, std::ofstream &ofs, const std::string &path);
     static void download_info_about_player(Player &player, std::ifstream &ifs, const std::string &path);

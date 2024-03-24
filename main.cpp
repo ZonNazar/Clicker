@@ -13,12 +13,11 @@ void admin_login(std::string &command) {
     std::cout << "Who You want to change?" << std::endl;
     getline(std::cin, command);
     Player temp_player;
-    std::ifstream temp_ifs;
     std::ofstream temp_ofs;
 
     for (const auto &file: fs::directory_iterator("Users")) {
-        if (command + ".txt" == file.path().filename().string()) {
-            Player::download_info_about_player(temp_player, temp_ifs, file.path().string());
+        if (command  == file.path().filename().string()) {
+            Player::download_info_about_player(temp_player, file.path().string(), command);
         }
     }
     while (command != "exit") {
@@ -64,7 +63,7 @@ void admin_login(std::string &command) {
             temp_ofs.close();
         }
     }
-    Player::upload_info_about_player(temp_player, temp_ofs, "Users");
+    Player::upload_info_about_player(temp_player, "Users/"+temp_player.get_name());
 }
 
 void player_login(std::string &command, Player &player) {
@@ -73,11 +72,13 @@ void player_login(std::string &command, Player &player) {
         getline(std::cin, command);
         if (command.empty()) {
             temp_ofs.open("player_log", std::ofstream::app);
-            temp_ofs << "Player clicked" << std::endl;
+            temp_ofs << player.get_name() << " clicked" << std::endl;
+            temp_ofs.close();
             player++;
         }
         system("clear");
     }
+    Player::upload_info_about_player(player, "Users/"+player.get_name());
 }
 
 void set_password(const std::string &password_to_set) {
@@ -120,9 +121,8 @@ int main() {
         }
     } else {
         for (const auto &file: fs::directory_iterator("Users")) {
-            if (command + ".txt" == file.path().filename().string()) {
-                std::ifstream ifs;
-                Player::download_info_about_player(player, ifs, file.path().string());
+            if (command == file.path().filename().string()) {
+                Player::download_info_about_player(player, file.path().string(), command);
                 std::cout << "Hi, " << command << "! It`s nice to see you again!"
                           << "Press Enter to start" << std::endl;
                 getline(std::cin, command);
@@ -136,8 +136,8 @@ int main() {
             std::cout << "Sorry, what`s your name again?" << std::endl;
             getline(std::cin, command);
             Player temp_player(command);
-            std::ofstream file_to_write;
-            Player::upload_info_about_player(temp_player, file_to_write, "Users");
+            fs::create_directory("Users/"+command);
+            Player::upload_info_about_player(temp_player, "Users/"+command);
             std::cout << "Okay, " << command << ", let the journey begin!" << std::endl;
             player_login(command, temp_player);
             return 0;

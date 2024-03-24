@@ -5,4 +5,5 @@ class Description {
 public:
     virtual void show_info() const = 0;
 };
+
 #endif

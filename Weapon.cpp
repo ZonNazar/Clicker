@@ -11,3 +11,5 @@ Weapon::Weapon(const std::string &name, int level)
 
 Weapon::Weapon(const std::string &name, int level, int damage)
         : _name{name}, _level{level}, _damage{damage} {}
+
+Weapon::~Weapon() {}

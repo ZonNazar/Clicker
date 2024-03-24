@@ -14,8 +14,8 @@ private:
     std::string _name;
     std::string _email;
     int _id;
+    int _balance;
     Weapon _weapon;
-    std::vector<Upgrade> purchased_upgrades;
 public:
     Player();
 
@@ -25,7 +25,11 @@ public:
 
     Player(const std::string &name, const std::string &email, int id);
 
+    Player(const std::string &name, const std::string &email, int id, int balance);
+
     ~Player();
+
+    int get_balance() const;
 
     int get_kills() const;
 
@@ -42,6 +46,10 @@ public:
     void set_new_id(int new_id);
 
     void set_new_score(int new_score);
+
+    void set_new_balance(int new_balance);
+
+    void update_balance(int money_to_add);
 
     void operator+(const Player &player);
 

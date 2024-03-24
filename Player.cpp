@@ -24,6 +24,10 @@ int Player::get_id() const {
     return _id;
 }
 
+int Player::get_balance() const {
+    return _balance;
+}
+
 void Player::set_new_name(const std::string &new_name) {
     _name = new_name;
 }
@@ -38,6 +42,14 @@ void Player::set_new_id(int new_id) {
 
 void Player::set_new_score(int new_score) {
     _killed_enemies = new_score;
+}
+
+void Player::set_new_balance(int new_balance) {
+    _balance = new_balance;
+}
+
+void Player::update_balance(int money_to_add) {
+    _balance += money_to_add;
 }
 
 void Player::show_info() const {
@@ -63,14 +75,15 @@ void Player::upload_info_about_player(const Player &player, const std::string &p
     ofs << player._name << std::endl
         << player._email << std::endl
         << player._id << std::endl
-        << player._killed_enemies;
+        << player._killed_enemies << std::endl
+        << player._balance;
     ofs.close();
-    Weapon::upload_info_about_weapon(player._weapon,path);
+    Weapon::upload_info_about_weapon(player._weapon, path);
 }
 
 void Player::download_info_about_player(Player &player, const std::string &path, std::string &name_to_find) {
-    std::string file_to_find = path+name_to_find+".txt";
-    std::ifstream ifs(path+"/"+name_to_find+".txt", std::iostream::out);
+    std::string file_to_find = path + name_to_find + ".txt";
+    std::ifstream ifs(path + "/" + name_to_find + ".txt", std::iostream::out);
     std::string current_line;
     getline(ifs, current_line);
     player.set_new_name(current_line);
@@ -80,20 +93,25 @@ void Player::download_info_about_player(Player &player, const std::string &path,
     player.set_new_id(std::stoi(current_line));
     getline(ifs, current_line);
     player.set_new_score(std::stoi(current_line));
+    getline(ifs, current_line);
+    player.set_new_balance(std::stoi(current_line));
     ifs.close();
-    Weapon::download_info_about_weapon(player._weapon,path);
+    Weapon::download_info_about_weapon(player._weapon, path);
 }
 
 Player::Player()
-        : Player{"Frank", "emptyemail@gmail.com", RandomNumber(0, 1000)} {}
+        : Player{"Frank", "emptyemail@gmail.com", RandomNumber(0, 1000),0} {}
 
 Player::Player(const std::string &name)
-        : Player{name, "emptyemail@gmail.com", RandomNumber(0, 1000)} {}
+        : Player{name, "emptyemail@gmail.com", RandomNumber(0, 1000),0} {}
 
 Player::Player(const std::string &name, const std::string &email)
-        : Player{name, email, RandomNumber(0, 1000)} {}
+        : Player{name, email, RandomNumber(0, 1000),0} {}
 
 Player::Player(const std::string &name, const std::string &email, int id)
-        : _name{name}, _email{email}, _id{id}, _killed_enemies{0} {}
+        :Player{name, email, id,0} {}
+
+Player::Player(const std::string &name, const std::string &email, int id, int balance)
+        : _name{name}, _email{email}, _id{id}, _balance{balance}, _killed_enemies{0}{}
 
 Player::~Player() {}

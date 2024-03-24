@@ -14,7 +14,7 @@ private:
     std::string _name;
     std::string _email;
     int _id;
-    Weapon currentWeapon;
+    Weapon _weapon;
     std::vector<Upgrade> purchased_upgrades;
 public:
     Player();
@@ -49,9 +49,9 @@ public:
 
     virtual void show_info() const override;
 
-    static void upload_info_about_player(const Player &player, std::ofstream &ofs, const std::string &path);
+    static void upload_info_about_player(const Player &player, const std::string &path);
 
-    static void download_info_about_player(Player &player, std::ifstream &ifs, const std::string &path);
+    static void download_info_about_player(Player &player, const std::string &path, std::string &name_to_find);
 
     static int RandomNumber(int a, int b);
 

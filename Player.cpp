@@ -1,5 +1,6 @@
 #include "Player.h"
 #include <random>
+#include <fstream>
 
 int Player::RandomNumber(int a, int b) {
     std::random_device rd;
@@ -57,17 +58,19 @@ std::ostream &operator<<(std::ostream &os, const Player &player) {
     return os;
 }
 
-void Player::upload_info_about_player(const Player &player, std::ofstream &ofs, const std::string &path) {
-    ofs.open(path + "/" + player._name + ".txt", std::ofstream::out);
+void Player::upload_info_about_player(const Player &player, const std::string &path) {
+    std::ofstream ofs(path + "/" + player._name + ".txt", std::ofstream::out);
     ofs << player._name << std::endl
         << player._email << std::endl
         << player._id << std::endl
         << player._killed_enemies;
     ofs.close();
+    Weapon::upload_info_about_weapon(player._weapon,path);
 }
 
-void Player::download_info_about_player(Player &player, std::ifstream &ifs, const std::string &path) {
-    ifs.open(path, std::iostream::out);
+void Player::download_info_about_player(Player &player, const std::string &path, std::string &name_to_find) {
+    std::string file_to_find = path+name_to_find+".txt";
+    std::ifstream ifs(path+"/"+name_to_find+".txt", std::iostream::out);
     std::string current_line;
     getline(ifs, current_line);
     player.set_new_name(current_line);
@@ -78,6 +81,7 @@ void Player::download_info_about_player(Player &player, std::ifstream &ifs, cons
     getline(ifs, current_line);
     player.set_new_score(std::stoi(current_line));
     ifs.close();
+    Weapon::download_info_about_weapon(player._weapon,path);
 }
 
 Player::Player()

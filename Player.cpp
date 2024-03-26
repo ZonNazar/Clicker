@@ -28,6 +28,10 @@ int Player::get_balance() const {
     return _balance;
 }
 
+Weapon Player::get_weapon() const {
+    return _weapon;
+}
+
 void Player::set_new_name(const std::string &new_name) {
     _name = new_name;
 }
@@ -100,18 +104,18 @@ void Player::download_info_about_player(Player &player, const std::string &path,
 }
 
 Player::Player()
-        : Player{"Frank", "emptyemail@gmail.com", RandomNumber(0, 1000),0} {}
+        : Player{"Frank", "emptyemail@gmail.com", RandomNumber(0, 1000), 0} {}
 
 Player::Player(const std::string &name)
-        : Player{name, "emptyemail@gmail.com", RandomNumber(0, 1000),0} {}
+        : Player{name, "emptyemail@gmail.com", RandomNumber(0, 1000), 0} {}
 
 Player::Player(const std::string &name, const std::string &email)
-        : Player{name, email, RandomNumber(0, 1000),0} {}
+        : Player{name, email, RandomNumber(0, 1000), 0} {}
 
 Player::Player(const std::string &name, const std::string &email, int id)
-        :Player{name, email, id,0} {}
+        : Player{name, email, id, 0} {}
 
 Player::Player(const std::string &name, const std::string &email, int id, int balance)
-        : _name{name}, _email{email}, _id{id}, _balance{balance}, _killed_enemies{0}{}
+        : _name{name}, _email{email}, _id{id}, _balance{balance}, _killed_enemies{0}, _weapon{"stick", 1, 1} {}
 
 Player::~Player() {}

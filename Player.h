@@ -39,6 +39,8 @@ public:
 
     int get_id() const;
 
+    Weapon get_weapon() const;
+
     void set_new_name(const std::string &new_name);
 
     void set_new_email(const std::string &new_email);

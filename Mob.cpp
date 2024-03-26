@@ -13,11 +13,15 @@ int Mob::get_hp() const {
     return _hp;
 }
 
+int Mob::get_reward() const {
+    return _money_for_kill;
+}
+
 Mob::Mob()
         : Mob{1} {}
 
 Mob::Mob(int hp)
-        : Mob{1,10} {}
+        : Mob{1, 10} {}
 
 Mob::Mob(int hp, int money)
         : Enemy{}, _hp{hp}, _money_for_kill{money} {}

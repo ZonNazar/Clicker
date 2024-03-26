@@ -15,6 +15,8 @@ public:
 
     int get_hp() const;
 
+    int get_reward() const;
+
     Mob();
 
     Mob(int hp);

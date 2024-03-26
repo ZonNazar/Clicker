@@ -7,29 +7,35 @@ void Mob::show_info() const {
 
 void Mob::take_damage(int damage) {
     this->_hp -= damage;
-    if (this->_hp <= 0) Mob::~Mob();
+}
+
+int Mob::get_hp() const {
+    return _hp;
 }
 
 Mob::Mob()
         : Mob{1} {}
 
 Mob::Mob(int hp)
-        : Enemy{}, _hp{hp} {}
+        : Mob{1,10} {}
+
+Mob::Mob(int hp, int money)
+        : Enemy{}, _hp{hp}, _money_for_kill{money} {}
 
 Mob &Mob::operator=(const Mob &rhs) {
     if (this != &rhs) {
         Enemy::operator=(rhs);
         _hp = rhs._hp;
+        _money_for_kill = rhs._money_for_kill;
     }
     return *this;
 }
 
 Mob::Mob(Mob &&other) noexcept
-        : Enemy{other}, _hp{other._hp} {}
+        : Enemy{other}, _hp{other._hp}, _money_for_kill{other._money_for_kill} {}
 
 Mob::Mob(const Mob &other)
-        : Enemy{other}, _hp{other._hp} {}
+        : Enemy{other}, _hp{other._hp}, _money_for_kill{other._money_for_kill} {}
 
 Mob::~Mob() {
-    std::cout << "MD";
 }

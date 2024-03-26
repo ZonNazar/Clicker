@@ -7,14 +7,19 @@
 class Mob : public Enemy {
 private:
     int _hp;
+    int _money_for_kill;
 public:
     virtual void show_info() const override;
 
     virtual void take_damage(int damage) override;
 
+    int get_hp() const;
+
     Mob();
 
     Mob(int hp);
+
+    Mob(int hp, int money);
 
     Mob(Mob &&other) noexcept;
 

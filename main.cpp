@@ -9,15 +9,14 @@
 #include "Mob.h"
 #include "Weapon.h"
 
+#define start_button_code '1'
+#define stats_button_code '2'
+#define blacksmith_button_code '3'
+#define achievement_button_code '4'
+#define leaderboard_button_code '5'
+#define escape_button_code '6'
+
 namespace fs = std::filesystem;
-
-void stats_button(Player &player);
-
-void blacksmith_button(Player &player);
-
-void achievements_button(Player &player);
-
-void start_button(Player &player);
 
 void admin_login(std::string &command) {
     std::cout << "Who You want to change?" << std::endl;
@@ -76,30 +75,6 @@ void admin_login(std::string &command) {
     Player::upload_info_about_player(temp_player, "Users/" + temp_player.get_name());
 }
 
-void open_player_main_menu(Player &player) {
-    while (true) {
-        system("clear");
-        std::cout << "|1|    Start     |1|" << std::endl;
-        std::cout << "|2|    Stats     |2|" << std::endl;
-        std::cout << "|3|  Blacksmith  |3|" << std::endl;
-        std::cout << "|4| Achievements |4|" << std::endl;
-        std::cout << "|5|     Exit     |5|" << std::endl;
-        while (true) {
-            if (GetAsyncKeyState('1')) {
-                start_button(player);
-                break;
-            } else if (GetAsyncKeyState('2')) stats_button(player);
-            else if (GetAsyncKeyState('3')) blacksmith_button(player);
-            else if (GetAsyncKeyState('4')) achievements_button(player);
-            else if (GetAsyncKeyState('5')) {
-                Player::upload_info_about_player(player, "Users/" + player.get_name());
-                return;
-            }
-            Sleep(100);
-        }
-    }
-}
-
 void display_enemy_alive() {
     std::cout << R"(     \\\|||///)" << std::endl
               << "   .  ======= " << std::endl
@@ -134,14 +109,14 @@ void display_enemy_dead() {
 
 void start_button(Player &player) {
     system("clear");
-    std::unique_ptr<Mob> current_enemy{new Mob(player.get_kills() + 1)};
-    while (!GetAsyncKeyState('5')) {
+    std::unique_ptr<Mob> current_enemy = std::make_unique<Mob>(player.get_kills() + 1);
+    while (!GetAsyncKeyState(escape_button_code)) {
         system("clear");
         std::cout << "|  Kill the inviders to earn money and free your land  |" << std::endl;
         std::cout << "| Current enemy HP:" << current_enemy->get_hp() << " |" << std::endl;
         display_enemy_alive();
         std::cout << "| Current balance:" << player.get_balance() << " |" << std::endl;
-        std::cout << "|5| Exit |5|" << std::endl;
+        std::cout << "|6|     Exit     |6|" << std::endl;
         while (true) {
             if (GetAsyncKeyState(' ')) {
                 current_enemy->take_damage(player.get_weapon().get_damage());
@@ -151,13 +126,14 @@ void start_button(Player &player) {
                     std::cout << "| Current enemy HP:" << current_enemy->get_hp() << " |" << std::endl;
                     display_enemy_dead();
                     std::cout << "| Current balance:" << player.get_balance() << " |" << std::endl;
-                    std::cout << "|5| Exit |5|" << std::endl;
+                    std::cout << "|6|     Exit     |6|" << std::endl;
                     Sleep(1000);
+                    player++;
                     player.update_balance(current_enemy->get_reward());
                     current_enemy = std::make_unique<Mob>(player.get_kills() + 1);
                 }
                 break;
-            } else if (GetAsyncKeyState('5')) {
+            } else if (GetAsyncKeyState(escape_button_code)) {
                 Sleep(200);
                 return;
             }
@@ -165,25 +141,65 @@ void start_button(Player &player) {
     }
 }
 
-void stats_button(Player &player) {}
+void stats_button(Player &player) {
+    system("clear");
+    std::cout << "Hi, " << player.get_name() << "!" << std::endl
+    << "There you can find your something about your`s account" << std::endl
+    << "Killed enemies: " << player.get_kills() << std::endl
+    << "Current balance:" << player.get_balance() << std::endl
+    << "Your weapon is " << player.get_weapon().get_name()
+    << " with " << player.get_weapon().get_damage() << " damage per click"
+    << " at level " << player.get_weapon().get_level() << std::endl
+    << "|6|     Exit     |6|" << std::endl;
+    while (true)
+    {
+        if(GetAsyncKeyState(escape_button_code))
+        {
+            Sleep(100);
+            break;
+        }
+    }
+}
+void leaderboard_button(Player &player)
+{}
 
 void blacksmith_button(Player &player) {}
 
 void achievements_button(Player &player) {}
 
+void open_player_main_menu(Player &player) {
+    while (true) {
+        system("clear");
+        std::cout << "|1|    Start     |1|" << std::endl;
+        std::cout << "|2|    Stats     |2|" << std::endl;
+        std::cout << "|3|  Blacksmith  |3|" << std::endl;
+        std::cout << "|4| Achievements |4|" << std::endl;
+        std::cout << "|5|   Leaders    |5|" << std::endl;
+        std::cout << "|6|     Exit     |6|" << std::endl;
+        while (true) {
+            if (GetAsyncKeyState(start_button_code)) {
+                start_button(player);
+                break;
+            } else if (GetAsyncKeyState(stats_button_code)) {
+                stats_button(player);
+                break;
+            }
+            else if (GetAsyncKeyState(blacksmith_button_code)) blacksmith_button(player);
+            else if (GetAsyncKeyState(achievement_button_code)) achievements_button(player);
+            else if (GetAsyncKeyState(leaderboard_button_code)) leaderboard_button(player);
+            else if (GetAsyncKeyState(escape_button_code)) {
+                system("clear");
+                Player::upload_info_about_player(player, "Users/" + player.get_name());
+                return;
+            }
+            Sleep(100);
+        }
+    }
+}
+
+
 void player_login(std::string &command, Player &player) {
     open_player_main_menu(player);
-//        std::ofstream temp_ofs;
-//        getline(std::cin, command);
-//        if (command.empty()) {
-//            temp_ofs.open("player_log", std::ofstream::app);
-//            temp_ofs << player.get_name() << " clicked" << std::endl;
-//            temp_ofs.close();
-//            player++;
-//        }
-//        system("clear");
-//    }
-//    Player::upload_info_about_player(player, "Users/"+player.get_name());
 }
 
 void set_password(const std::string &password_to_set) {

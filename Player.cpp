@@ -69,6 +69,18 @@ int Player::operator++(int) {
     return _killed_enemies;
 }
 
+Player &Player::operator=(const Player &other) {
+    if(*this != other)
+    {
+        _name = other._name;
+        _email = other._email;
+        _id = other._id;
+        _balance = other._balance;
+        _killed_enemies = other._killed_enemies;
+        _weapon = other._weapon;
+    } else return *this;
+}
+
 std::ostream &operator<<(std::ostream &os, const Player &player) {
     os << "\n This player have killed: " << player._killed_enemies << "enemies";
     return os;
@@ -118,14 +130,13 @@ Player::Player(const std::string &name, const std::string &email, int id)
 Player::Player(const std::string &name, const std::string &email, int id, int balance)
         : _name{name}, _email{email}, _id{id}, _balance{balance}, _killed_enemies{0}, _weapon{"stick", 1, 1} {}
 
-Player::Player(const Player &other){
+Player::Player(const Player &other) {
     _name = other._name;
     _email = other._email;
     _id = other._id;
     _balance = other._balance;
     _killed_enemies = other._killed_enemies;
-    _weapon = other._weapon;
-}
+    _weapon = other._weapon;}
 
 Player::Player(Player &&other) noexcept {
     _name = other._name;

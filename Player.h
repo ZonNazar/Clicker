@@ -61,6 +61,8 @@ public:
 
     int operator++(int);
 
+    Player &operator=(const Player &other);
+
     virtual void show_info() const override;
 
     static void upload_info_about_player(const Player &player, const std::string &path);

@@ -78,6 +78,7 @@ Player &Player::operator=(const Player &other) {
         _balance = other._balance;
         _killed_enemies = other._killed_enemies;
         _weapon = other._weapon;
+        return *this;
     } else return *this;
 }
 

@@ -27,6 +27,10 @@ public:
 
     Player(const std::string &name, const std::string &email, int id, int balance);
 
+    Player(const Player &other);
+
+    Player(Player &&other) noexcept;
+
     ~Player();
 
     int get_balance() const;
@@ -61,7 +65,7 @@ public:
 
     static void upload_info_about_player(const Player &player, const std::string &path);
 
-    static void download_info_about_player(Player &player, const std::string &path, std::string &name_to_find);
+    static void download_info_about_player(Player &player, const std::string &path, const std::string &name_to_find);
 
     static int RandomNumber(int a, int b);
 

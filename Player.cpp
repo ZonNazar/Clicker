@@ -85,7 +85,7 @@ void Player::upload_info_about_player(const Player &player, const std::string &p
     Weapon::upload_info_about_weapon(player._weapon, path);
 }
 
-void Player::download_info_about_player(Player &player, const std::string &path, std::string &name_to_find) {
+void Player::download_info_about_player(Player &player, const std::string &path, const std::string &name_to_find) {
     std::string file_to_find = path + name_to_find + ".txt";
     std::ifstream ifs(path + "/" + name_to_find + ".txt", std::iostream::out);
     std::string current_line;
@@ -117,5 +117,23 @@ Player::Player(const std::string &name, const std::string &email, int id)
 
 Player::Player(const std::string &name, const std::string &email, int id, int balance)
         : _name{name}, _email{email}, _id{id}, _balance{balance}, _killed_enemies{0}, _weapon{"stick", 1, 1} {}
+
+Player::Player(const Player &other){
+    _name = other._name;
+    _email = other._email;
+    _id = other._id;
+    _balance = other._balance;
+    _killed_enemies = other._killed_enemies;
+    _weapon = other._weapon;
+}
+
+Player::Player(Player &&other) noexcept {
+    _name = other._name;
+    _email = other._email;
+    _id = other._id;
+    _balance = other._balance;
+    _killed_enemies = other._killed_enemies;
+    _weapon = other._weapon;
+}
 
 Player::~Player() {}

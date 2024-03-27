@@ -70,7 +70,7 @@ int Player::operator++(int) {
 }
 
 Player &Player::operator=(const Player &other) {
-    if(*this != other)
+    if(this != &other)
     {
         _name = other._name;
         _email = other._email;

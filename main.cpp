@@ -380,6 +380,7 @@ void open_player_main_menu(Player &player) {
         while (true) {
             if (GetAsyncKeyState(start_button_code)) {
                 start_button(player);
+                Player::upload_info_about_player(player, "Users/" + player.get_name());
                 break;
             } else if (GetAsyncKeyState(stats_button_code)) {
                 stats_button(player);

@@ -4,7 +4,6 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include "Upgrade.h"
 #include "Weapon.h"
 #include "Description.h"
 

@@ -52,6 +52,10 @@ void Player::set_new_balance(int new_balance) {
     _balance = new_balance;
 }
 
+void Player::set_new_weapon(Weapon &weapon) {
+    _weapon = weapon;
+}
+
 void Player::update_balance(int money_to_add) {
     _balance += money_to_add;
 }
@@ -70,8 +74,7 @@ int Player::operator++(int) {
 }
 
 Player &Player::operator=(const Player &other) {
-    if(this != &other)
-    {
+    if (this != &other) {
         _name = other._name;
         _email = other._email;
         _id = other._id;
@@ -137,7 +140,8 @@ Player::Player(const Player &other) {
     _id = other._id;
     _balance = other._balance;
     _killed_enemies = other._killed_enemies;
-    _weapon = other._weapon;}
+    _weapon = other._weapon;
+}
 
 Player::Player(Player &&other) noexcept {
     _name = other._name;

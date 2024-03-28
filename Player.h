@@ -53,6 +53,8 @@ public:
 
     void set_new_score(int new_score);
 
+    void set_new_weapon(Weapon &weapon);
+
     void set_new_balance(int new_balance);
 
     void update_balance(int money_to_add);

@@ -38,6 +38,16 @@ void Weapon::upload_info_about_weapon(const Weapon &weapon, const std::string &p
     ofs.close();
 }
 
+void Weapon::update_damage(int damage_to_add) {
+    _damage+=damage_to_add;
+}
+
+int Weapon::operator++(int) {
+    _level++;
+    update_damage(_level*2);
+    return _level;
+}
+
 Weapon::Weapon()
         : Weapon{"Noname", 1, 1} {}
 

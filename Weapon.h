@@ -30,6 +30,11 @@ public:
     int get_damage() const;
 
     int get_level() const;
+
+    void update_damage(int damage_to_add);
+
+    int operator++(int);
+
     static void upload_info_about_weapon(const Weapon &weapon, const std::string &path);
 
     static void download_info_about_weapon(Weapon &weapon, const std::string &path);

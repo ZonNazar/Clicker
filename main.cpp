@@ -63,8 +63,8 @@ void admin_login(std::string &command) {
             getline(std::cin, command);
             std::string temp_name = temp_player.get_name();
             temp_player.set_new_name(command);
-            fs::rename("Users/"+temp_name, "Users/"+temp_player.get_name());
-            fs::remove("Users/"+temp_player.get_name()+"/"+temp_name+".txt");
+            fs::rename("Users/" + temp_name, "Users/" + temp_player.get_name());
+            fs::remove("Users/" + temp_player.get_name() + "/" + temp_name + ".txt");
             temp_ofs.open("admin_log", std::ofstream::app);
             temp_ofs << "Changed " << temp_name << "`s name to " << command << std::endl;
             temp_ofs.close();
@@ -98,7 +98,7 @@ void admin_login(std::string &command) {
                 temp_ofs << temp_player.get_name() << "`s weapon level changed from "
                          << temp_weapon_level << " to " << temp_player.get_weapon().get_level();
                 temp_ofs.close();
-            }else if (command == "damage") {
+            } else if (command == "damage") {
                 int temp_weapon_damage = temp_player.get_weapon().get_damage();
                 int new_damage;
                 std::cout << "Current damage of " << temp_player.get_name() << "`s weapon is "
@@ -115,7 +115,7 @@ void admin_login(std::string &command) {
             }
         }
     }
-    fs::create_directory("Users/"+temp_player.get_name());
+    fs::create_directory("Users/" + temp_player.get_name());
     Player::upload_info_about_player(temp_player, "Users/" + temp_player.get_name());
 }
 

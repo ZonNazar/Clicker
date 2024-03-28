@@ -119,6 +119,7 @@ void start_button(Player &player) {
         std::cout << "|6|     Exit     |6|" << std::endl;
         while (true) {
             if (GetAsyncKeyState(' ')) {
+                Sleep(100);
                 current_enemy->take_damage(player.get_weapon().get_damage());
                 if (current_enemy->get_hp() <= 0) {
                     system("clear");
@@ -144,24 +145,145 @@ void start_button(Player &player) {
 void stats_button(Player &player) {
     system("clear");
     std::cout << "Hi, " << player.get_name() << "!" << std::endl
-    << "There you can find your something about your`s account" << std::endl
-    << "Killed enemies: " << player.get_kills() << std::endl
-    << "Current balance:" << player.get_balance() << std::endl
-    << "Your weapon is " << player.get_weapon().get_name()
-    << " with " << player.get_weapon().get_damage() << " damage per click"
-    << " at level " << player.get_weapon().get_level() << std::endl
-    << "|6|     Exit     |6|" << std::endl;
-    while (true)
-    {
-        if(GetAsyncKeyState(escape_button_code))
-        {
+              << "There you can find your something about your`s account" << std::endl
+              << "Killed enemies: " << player.get_kills() << std::endl
+              << "Current balance:" << player.get_balance() << std::endl
+              << "Your weapon is " << player.get_weapon().get_name()
+              << " with " << player.get_weapon().get_damage() << " damage per click"
+              << " at level " << player.get_weapon().get_level() << std::endl
+              << "|6|     Exit     |6|" << std::endl;
+    while (true) {
+        if (GetAsyncKeyState(escape_button_code)) {
             Sleep(100);
             break;
         }
     }
 }
-void leaderboard_button(Player &player)
-{}
+
+void leaderboard_button(Player &player) {
+    system("clear");
+    std::vector<Player> temp_players;
+    std::vector<Player> temp_players_to_show;
+    Player temp_player;
+    for (auto &f: fs::directory_iterator("Users")) {
+        Player::download_info_about_player(temp_player,
+                                           f.path().string() + "/",
+                                           f.path().filename().string());
+        temp_players.emplace_back(temp_player);
+    }
+    while (!GetAsyncKeyState(escape_button_code)) {
+        std::cout << "| There is a hall of the greatest players ever |" << std::endl
+                  << "|1|     Kills     |1|" << std::endl
+                  << "|2|    Balance    |2|" << std::endl
+                  << "|3| Weapon damage |3|" << std::endl
+                  << "|6|      Exit     |6|" << std::endl;
+        while (true) {
+            if (GetAsyncKeyState('1')) { //leaders by kills
+                system("clear");
+                Sleep(100);
+                temp_players_to_show = temp_players;
+                for (int i = 0; i < temp_players_to_show.size(); i++) {
+                    for (int j = i + 1; j < temp_players_to_show.size(); j++) {
+                        try {
+                            if (temp_players_to_show[j].get_kills() > temp_players_to_show[i].get_kills()) {
+                                std::swap(temp_players_to_show[i], temp_players_to_show[j]);
+                            }
+                        } catch (const std::out_of_range &ex) {
+                            break;
+                        }
+                    }
+                }
+                for (int i = 0; i <= 10; i++) {
+                    try {
+                        std::string name = temp_players_to_show[i].get_name();
+                        std::cout << i + 1 << "." << name
+                                  << " with " << temp_players_to_show[i].get_kills() << " kills. " << std::endl;
+                    } catch (const std::bad_alloc &e) { break; }
+                }
+                for (int i = 0; i < temp_players_to_show.size(); i++) {
+                    if (player.get_name() == temp_players_to_show[i].get_name()) {
+                        std::cout << "Your position in top is: " << i + 1 << std::endl;
+                    }
+                }
+                std::cout << "|6|      Exit     |6|" << std::endl;
+                while (!GetAsyncKeyState(escape_button_code)) {}
+                system("clear");
+                Sleep(100);
+                break;
+            } else if (GetAsyncKeyState('2')) { //leaders by balance
+                system("clear");
+                Sleep(100);
+                temp_players_to_show = temp_players;
+                for (int i = 0; i < temp_players_to_show.size(); i++) {
+                    for (int j = i + 1; j < temp_players_to_show.size(); j++) {
+                        try {
+                            if (temp_players_to_show[j].get_balance() > temp_players_to_show[i].get_balance()) {
+                                std::swap(temp_players_to_show[i], temp_players_to_show[j]);
+                            }
+                        } catch (const std::out_of_range &ex) {
+                            break;
+                        }
+                    }
+                }
+                for (int i = 0; i <= 10; i++) {
+                    try {
+                        std::string name = temp_players_to_show[i].get_name();
+                        std::cout << i + 1 << "." << name
+                                  << " with " << temp_players_to_show[i].get_balance() << " on balance. " << std::endl;
+                    } catch (const std::bad_alloc &e) { break; }
+                }
+                for (int i = 0; i < temp_players_to_show.size(); i++) {
+                    if (player.get_name() == temp_players_to_show[i].get_name()) {
+                        std::cout << "Your position in top is: " << i + 1 << std::endl;
+                    }
+                }
+                std::cout << "|6|      Exit     |6|" << std::endl;
+                while (!GetAsyncKeyState(escape_button_code)) {}
+                system("clear");
+                Sleep(100);
+                break;
+            } else if (GetAsyncKeyState('3')) { //leaders by weapon damage
+                system("clear");
+                Sleep(100);
+                temp_players_to_show = temp_players;
+                for (int i = 0; i < temp_players_to_show.size(); i++) {
+                    for (int j = i + 1; j < temp_players_to_show.size(); j++) {
+                        try {
+                            if (temp_players_to_show[j].get_weapon().get_damage() >
+                                temp_players_to_show[i].get_weapon().get_damage()) {
+                                std::swap(temp_players_to_show[i], temp_players_to_show[j]);
+                            }
+                        } catch (const std::out_of_range &ex) {
+                            break;
+                        }
+                    }
+                }
+                for (int i = 0; i <= 10; i++) {
+                    try {
+                        std::string name = temp_players_to_show[i].get_name();
+                        std::cout << i + 1 << "." << name
+                                  << " with " << temp_players_to_show[i].get_weapon().get_damage() << " damage. "
+                                  << std::endl;
+                    } catch (const std::bad_alloc &e) { break; }
+                }
+                for (int i = 0; i < temp_players_to_show.size(); i++) {
+                    if (player.get_name() == temp_players_to_show[i].get_name()) {
+                        std::cout << "Your position in top is: " << i + 1 << std::endl;
+                    }
+                }
+                std::cout << "|6|      Exit     |6|" << std::endl;
+                while (!GetAsyncKeyState(escape_button_code)) {}
+                system("clear");
+                Sleep(100);
+                break;
+            } else if (GetAsyncKeyState(escape_button_code)) {
+                system("clear");
+                return;
+            }
+            Sleep(100);
+        }
+    }
+}
 
 void blacksmith_button(Player &player) {}
 
@@ -170,12 +292,13 @@ void achievements_button(Player &player) {}
 void open_player_main_menu(Player &player) {
     while (true) {
         system("clear");
-        std::cout << "|1|    Start     |1|" << std::endl;
-        std::cout << "|2|    Stats     |2|" << std::endl;
-        std::cout << "|3|  Blacksmith  |3|" << std::endl;
-        std::cout << "|4| Achievements |4|" << std::endl;
-        std::cout << "|5|   Leaders    |5|" << std::endl;
-        std::cout << "|6|     Exit     |6|" << std::endl;
+        Sleep(100);
+        std::cout << "|1|    Start     |1|" << std::endl
+                  << "|2|    Stats     |2|" << std::endl
+                  << "|3|  Blacksmith  |3|" << std::endl
+                  << "|4| Achievements |4|" << std::endl
+                  << "|5|   Leaders    |5|" << std::endl
+                  << "|6|     Exit     |6|" << std::endl;
         while (true) {
             if (GetAsyncKeyState(start_button_code)) {
                 start_button(player);
@@ -183,11 +306,12 @@ void open_player_main_menu(Player &player) {
             } else if (GetAsyncKeyState(stats_button_code)) {
                 stats_button(player);
                 break;
-            }
-            else if (GetAsyncKeyState(blacksmith_button_code)) blacksmith_button(player);
+            } else if (GetAsyncKeyState(blacksmith_button_code)) blacksmith_button(player);
             else if (GetAsyncKeyState(achievement_button_code)) achievements_button(player);
-            else if (GetAsyncKeyState(leaderboard_button_code)) leaderboard_button(player);
-            else if (GetAsyncKeyState(escape_button_code)) {
+            else if (GetAsyncKeyState(leaderboard_button_code)) {
+                leaderboard_button(player);
+                break;
+            } else if (GetAsyncKeyState(escape_button_code)) {
                 system("clear");
                 Player::upload_info_about_player(player, "Users/" + player.get_name());
                 return;

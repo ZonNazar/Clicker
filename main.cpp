@@ -4,8 +4,6 @@
 #include <windows.h>
 #include <memory>
 #include "Player.h"
-#include "Upgrade.h"
-#include "Enemy.h"
 #include "Mob.h"
 #include "Weapon.h"
 

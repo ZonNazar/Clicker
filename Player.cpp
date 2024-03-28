@@ -103,7 +103,7 @@ void Player::upload_info_about_player(const Player &player, const std::string &p
 
 void Player::download_info_about_player(Player &player, const std::string &path, const std::string &name_to_find) {
     std::string file_to_find = path + name_to_find + ".txt";
-    std::ifstream ifs(path + "/" + name_to_find + ".txt", std::iostream::out);
+    std::ifstream ifs(path + "/" + name_to_find + ".txt", std::ifstream::out);
     std::string current_line;
     getline(ifs, current_line);
     player.set_new_name(current_line);

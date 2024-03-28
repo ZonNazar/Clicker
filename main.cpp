@@ -36,7 +36,7 @@ void admin_login(std::string &command) {
                       << "Enter new amount, please:";
             getline(std::cin, command);
             temp_player.set_new_score(std::stoi(command));
-            temp_ofs.open("admin_log", std::ostream::app);
+            temp_ofs.open("admin_log", std::ofstream::app);
             temp_ofs << "Changed " << temp_player.get_name() << "`s score of kills to "
                      << command << std::endl;
             temp_ofs.close();
@@ -46,7 +46,7 @@ void admin_login(std::string &command) {
                       << "Enter new email, please:";
             getline(std::cin, command);
             temp_player.set_new_email(command);
-            temp_ofs.open("admin_log", std::ostream::app);
+            temp_ofs.open("admin_log", std::ofstream::app);
             temp_ofs << "Changed " << temp_player.get_name() << "`s email to " << command << std::endl;
             temp_ofs.close();
         } else if (command == "id") {
@@ -55,7 +55,7 @@ void admin_login(std::string &command) {
                       << "Enter new id, please:";
             getline(std::cin, command);
             temp_player.set_new_id(std::stoi(command));
-            temp_ofs.open("admin_log", std::ostream::app);
+            temp_ofs.open("admin_log", std::ofstream::app);
             temp_ofs << "Changed " << temp_player.get_name() << "`s id to " << command << std::endl;
             temp_ofs.close();
         } else if (command == "name") {
@@ -63,12 +63,59 @@ void admin_login(std::string &command) {
             getline(std::cin, command);
             std::string temp_name = temp_player.get_name();
             temp_player.set_new_name(command);
-            fs::remove("Users/" + temp_name + ".txt");
-            temp_ofs.open("admin_log", std::ostream::app);
+            fs::rename("Users/"+temp_name, "Users/"+temp_player.get_name());
+            fs::remove("Users/"+temp_player.get_name()+"/"+temp_name+".txt");
+            temp_ofs.open("admin_log", std::ofstream::app);
             temp_ofs << "Changed " << temp_name << "`s name to " << command << std::endl;
             temp_ofs.close();
+        } else if (command == "weapon") {
+            std::cout << "Choose what state of weapon you want to change" << std::endl;
+            getline(std::cin, command);
+            if (command == "name") {
+                std::string temp_weapon_name = temp_player.get_weapon().get_name();
+                std::cout << "Current name of " << temp_player.get_name() << "`s weapon is "
+                          << temp_player.get_weapon().get_name() << std::endl
+                          << "Enter new name: ";
+                getline(std::cin, command);
+                Weapon temp_weapon = temp_player.get_weapon();
+                temp_weapon.set_new_name(command);
+                temp_player.set_new_weapon(temp_weapon);
+                temp_ofs.open("admin_log", std::ofstream::app);
+                temp_ofs << temp_player.get_name() << "`s weapon name changed from "
+                         << temp_weapon_name << " to " << temp_player.get_weapon().get_name();
+                temp_ofs.close();
+            } else if (command == "level") {
+                int temp_weapon_level = temp_player.get_weapon().get_level();
+                int new_level;
+                std::cout << "Current lvl of " << temp_player.get_name() << "`s weapon is "
+                          << temp_player.get_weapon().get_level() << std::endl
+                          << "Enter new lvl: ";
+                std::cin >> new_level;
+                Weapon temp_weapon = temp_player.get_weapon();
+                temp_weapon.set_new_level(new_level);
+                temp_player.set_new_weapon(temp_weapon);
+                temp_ofs.open("admin_log", std::ofstream::app);
+                temp_ofs << temp_player.get_name() << "`s weapon level changed from "
+                         << temp_weapon_level << " to " << temp_player.get_weapon().get_level();
+                temp_ofs.close();
+            }else if (command == "damage") {
+                int temp_weapon_damage = temp_player.get_weapon().get_damage();
+                int new_damage;
+                std::cout << "Current damage of " << temp_player.get_name() << "`s weapon is "
+                          << temp_player.get_weapon().get_damage() << std::endl
+                          << "Enter new damage: ";
+                std::cin >> new_damage;
+                Weapon temp_weapon = temp_player.get_weapon();
+                temp_weapon.set_new_damage(new_damage);
+                temp_player.set_new_weapon(temp_weapon);
+                temp_ofs.open("admin_log", std::ofstream::app);
+                temp_ofs << temp_player.get_name() << "`s weapon damage changed from "
+                         << temp_weapon_damage << " to " << temp_player.get_weapon().get_damage();
+                temp_ofs.close();
+            }
         }
     }
+    fs::create_directory("Users/"+temp_player.get_name());
     Player::upload_info_about_player(temp_player, "Users/" + temp_player.get_name());
 }
 
@@ -121,7 +168,7 @@ void start_button(Player &player) {
                 if (current_enemy->get_hp() <= 0) {
                     system("clear");
                     std::cout << "|  Kill the inviders to earn money and free your land  |" << std::endl;
-                    std::cout << "| Current enemy HP:" << current_enemy->get_hp() << " |" << std::endl;
+                    std::cout << "| Current enemy HP:" << 0 << " |" << std::endl;
                     display_enemy_dead();
                     std::cout << "| Current balance:" << player.get_balance() << " |" << std::endl;
                     std::cout << "|5|     Exit     |5|" << std::endl;
@@ -309,7 +356,7 @@ void blacksmith_button(Player &player) {
                     break;
                 } else {
                     system("clear");
-                    std::cout << "Upgrade failed";
+                    std::cout << "Upgrade failed" << std::endl;
                     Sleep(1000);
                     break;
                 }
@@ -353,8 +400,7 @@ void open_player_main_menu(Player &player) {
     }
 }
 
-
-void player_login(std::string &command, Player &player) {
+void player_login(Player &player) {
     open_player_main_menu(player);
 }
 
@@ -403,7 +449,7 @@ int main() {
                 std::cout << "Hi, " << command << "! It`s nice to see you again!"
                           << "Press Enter to start" << std::endl;
                 getline(std::cin, command);
-                player_login(command, player);
+                player_login(player);
                 return 0;
             }
         }
@@ -416,7 +462,7 @@ int main() {
             fs::create_directory("Users/" + command);
             Player::upload_info_about_player(temp_player, "Users/" + command);
             std::cout << "Okay, " << command << ", let the journey begin!" << std::endl;
-            player_login(command, temp_player);
+            player_login(temp_player);
             return 0;
         } else return 0;
     }
